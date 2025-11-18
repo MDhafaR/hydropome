@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hydropome/screens/login_screen.dart';
 import '../core/constants/app_color.dart';
-import 'home_screen.dart';
+import 'register_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -36,9 +37,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
-  void _goToHome() {
+  void _goTLogin() {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
@@ -48,7 +49,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         _currentPage++;
       });
     } else {
-      _goToHome();
+      _goTLogin();
     }
   }
 
@@ -115,12 +116,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: ClipPath(
               clipper: OnboardingClipper(),
               child: Container(
+                padding: EdgeInsets.only(
+                  left: 18,
+                  right: 18,
+                  top: 120,
+                  bottom: 70,
+                ),
                 decoration: const BoxDecoration(color: AppColor.primary),
-                // Nilai 'top' harus lebih besar dari 'curveHeight' di clipper
-                // 80.0 (curve) + 24.0 (jarak) = 104.0
-                padding: const EdgeInsets.fromLTRB(24, 104, 24, 24),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Headline dengan emojis yang berubah
                     AnimatedSwitcher(
@@ -140,6 +143,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           },
                       child: RichText(
                         key: ValueKey<String>('headline_$_currentPage'),
+                        textAlign: TextAlign.center,
                         text: TextSpan(
                           style: const TextStyle(
                             fontSize: 28,
@@ -179,6 +183,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Text(
                         currentPageData.body,
                         key: ValueKey<String>('body_$_currentPage'),
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
@@ -188,7 +193,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                     const Spacer(),
-                    // Navigation bar - tetap di posisinya
                     _buildNavigation(),
                   ],
                 ),
@@ -205,7 +209,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: TextButton(
-                onPressed: _goToHome,
+                onPressed: _goTLogin,
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -243,10 +247,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Align(
             alignment: Alignment.center,
             child: CustomPageIndicator(
-            currentPage: _currentPage,
-            pageCount: 2,
-            activeDotColor: AppColor.activeDot,
-            inactiveDotColor: AppColor.inactiveDot.withValues(alpha: 0.2),
+              currentPage: _currentPage,
+              pageCount: 2,
+              activeDotColor: AppColor.activeDot,
+              inactiveDotColor: AppColor.inactiveDot.withValues(alpha: 0.2),
             ),
           ),
           // Arrow forward button di pojok kanan
