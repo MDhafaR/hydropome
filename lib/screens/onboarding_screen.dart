@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hydropome/screens/login_screen.dart';
 import '../core/constants/app_color.dart';
-import 'register_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -126,17 +125,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       duration: const Duration(milliseconds: 300),
                       transitionBuilder:
                           (Widget child, Animation<double> animation) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(0.0, 0.1),
-                              end: Offset.zero,
-                            ).animate(animation),
-                            child: child,
-                          ),
-                        );
-                      },
+                            return FadeTransition(
+                              opacity: animation,
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0.0, 0.1),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                            );
+                          },
                       child: RichText(
                         key: ValueKey<String>('headline_$_currentPage'),
                         textAlign: TextAlign.center,
@@ -165,17 +164,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       duration: const Duration(milliseconds: 300),
                       transitionBuilder:
                           (Widget child, Animation<double> animation) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(0.0, 0.1),
-                              end: Offset.zero,
-                            ).animate(animation),
-                            child: child,
-                          ),
-                        );
-                      },
+                            return FadeTransition(
+                              opacity: animation,
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0.0, 0.1),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                            );
+                          },
                       child: Text(
                         currentPageData.body,
                         key: ValueKey<String>('body_$_currentPage'),
@@ -239,10 +238,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Align(
             alignment: Alignment.center,
             child: CustomPageIndicator(
-              currentPage: _currentPage,
-              pageCount: 2,
-              activeDotColor: AppColor.activeDot,
-              inactiveDotColor: AppColor.inactiveDot.withValues(alpha: 0.2),
               currentPage: _currentPage,
               pageCount: 2,
               activeDotColor: AppColor.activeDot,
@@ -384,12 +379,7 @@ class OnboardingClipper extends CustomClipper<Path> {
     double curveHeight = 40.0;
 
     path.lineTo(0, 0);
-    path.quadraticBezierTo(
-      size.width / 2,
-      curveHeight * 2,
-      size.width,
-      0,
-    );
+    path.quadraticBezierTo(size.width / 2, curveHeight * 2, size.width, 0);
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
     path.close();

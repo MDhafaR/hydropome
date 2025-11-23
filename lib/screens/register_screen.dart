@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
-import 'home_screen.dart';
 import 'personalization_screen.dart';
 
 class RegisterPage1Screen extends StatefulWidget {
