@@ -9,7 +9,7 @@ class ProductDetailScreen extends StatefulWidget {
 
   const ProductDetailScreen({
     super.key,
-    required this.product,
+    required this.product, 
   });
 
   @override
