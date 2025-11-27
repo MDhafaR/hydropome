@@ -18,14 +18,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       emojis: ['🥕', '🍅'],
       body:
           'Bersama HydropoMe, menanam sayuran untuk hidup lebih sehat dan hemat jadi lebih mudah!',
-      imagePath: 'assets/onboarding1.png',
+      imagePath: 'assets/image_onboard1.png',
     ),
     OnboardingPageData(
       headline: 'Belanja Starter Kit & Jual Hasil Panen!',
       emojis: [],
       body:
           'Belanja, jual panen, dan penuhi kebutuhanmu di marketplace kami. Praktis banget buat kamu yang suka berkebun dari rumah!',
-      imagePath: 'assets/onboarding2.png',
+      imagePath: 'assets/image_onboard2.png',
     ),
   ];
 
@@ -67,7 +67,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: Stack(
         children: [
           // Gambar hero yang berubah dengan AnimatedSwitcher
-          Positioned.fill(
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 400),
               transitionBuilder: (Widget child, Animation<double> animation) {
@@ -206,9 +209,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: TextButton(
                 onPressed: _goTLogin,
                 style: TextButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+                    horizontal: 20,
+                    vertical: 4,
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -217,7 +221,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Text(
                   'Lewati',
                   style: TextStyle(
-                    color: AppColor.primary,
+                    color: AppColor.activeDot,
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
                   ),

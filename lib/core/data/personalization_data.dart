@@ -98,15 +98,15 @@ class PersonalizationData {
       optionItems: [
         QuestionOption(
           text: '< 1m²',
-          // imagePath: 'assets/images/area_small.png', // You can add image path here
+          imagePath: 'assets/image_luas_tanah.png', // You can add image path here
         ),
         QuestionOption(
           text: '1-3 m²',
-          // imagePath: 'assets/images/area_medium.png',
+          imagePath: 'assets/image_luas_tanah.png',
         ),
         QuestionOption(
           text: '> 3 m²',
-          // imagePath: 'assets/images/area_large.png',
+          imagePath: 'assets/image_luas_tanah.png',
         ),
       ],
       type: QuestionType.singleChoice,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hydropome/core/constants/app_color.dart';
 import 'package:hydropome/core/data/personalization_data.dart';
 
@@ -22,12 +23,6 @@ class PersonalizationQuestionCards extends StatelessWidget {
     required this.onScrollChanged,
     this.buttonText = 'Selanjutnya',
   });
-
-  // Color constants
-  static const Color cardBackground = Colors.white;
-  static const Color primaryGreen = AppColor.activeDot;
-  static const Color lightGreenBorder = AppColor.activeDot;
-  static const Color defaultBorder = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +81,7 @@ class PersonalizationQuestionCards extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: onNextPressed,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryGreen,
+                    backgroundColor: AppColor.activeDot,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
@@ -123,7 +118,7 @@ class PersonalizationQuestionCards extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
-        color: cardBackground,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(24.0),
         boxShadow: [
           BoxShadow(
@@ -139,7 +134,18 @@ class PersonalizationQuestionCards extends StatelessWidget {
           // Question Title
           Row(
             children: [
-              const Icon(Icons.eco_rounded, color: primaryGreen),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColor.greenLight,
+                  shape: BoxShape.circle,
+                ),
+                child: SvgPicture.asset(
+                  'assets/plant-icon.svg',
+                  width: 24,
+                  height: 24,
+                ),
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -204,6 +210,18 @@ class PersonalizationQuestionCards extends StatelessWidget {
     );
   }
 
+  // Helper function to get image size based on option text
+  double _getImageSize(String text) {
+    if (text.contains('< 1m²') || text.contains('< 1 m²')) {
+      return 60.0; // Default size
+    } else if (text.contains('1-3 m²') || text.contains('1-3m²')) {
+      return 120.0; // 2x larger
+    } else if (text.contains('> 3 m²') || text.contains('> 3m²')) {
+      return 180.0; // 3x larger
+    }
+    return 60.0; // Default size for other options
+  }
+
   // Helper widget for a single radio option (single choice)
   Widget _buildRadioTile({
     required String text,
@@ -212,20 +230,19 @@ class PersonalizationQuestionCards extends StatelessWidget {
     required VoidCallback onTap,
     required String? groupValue,
   }) {
+    final imageSize = _getImageSize(text);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
           decoration: BoxDecoration(
-            color: isSelected
-                ? lightGreenBorder.withOpacity(0.1)
-                : Colors.transparent,
+            color: isSelected ? AppColor.greenLight : Colors.grey[100],
             borderRadius: BorderRadius.circular(12.0),
             border: Border.all(
-              color: isSelected ? lightGreenBorder : defaultBorder,
-              width: isSelected ? 2.0 : 1.0,
+              color: isSelected ? AppColor.activeDot : Colors.transparent,
+              width: 2,
             ),
           ),
           child: Row(
@@ -239,21 +256,21 @@ class PersonalizationQuestionCards extends StatelessWidget {
                     onTap();
                   }
                 },
-                activeColor: primaryGreen,
+                activeColor: AppColor.activeDot,
               ),
               const SizedBox(width: 8),
               // Image if available
               if (imagePath != null) ...[
                 SizedBox(
-                  width: 60,
-                  height: 60,
+                  width: imageSize,
+                  height: imageSize,
                   child: imagePath.startsWith('http')
                       ? Image.network(
                           imagePath,
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) {
                             return Container(
-                              color: Colors.grey[200],
+                              color: Colors.grey[100],
                               child: const Icon(Icons.image_not_supported),
                             );
                           },
@@ -263,7 +280,7 @@ class PersonalizationQuestionCards extends StatelessWidget {
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) {
                             return Container(
-                              color: Colors.grey[200],
+                              color: Colors.grey[100],
                               child: const Icon(Icons.image_not_supported),
                             );
                           },
@@ -298,20 +315,19 @@ class PersonalizationQuestionCards extends StatelessWidget {
     required bool isSelected,
     required VoidCallback onTap,
   }) {
+    final imageSize = _getImageSize(text);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
           decoration: BoxDecoration(
-            color: isSelected
-                ? lightGreenBorder.withOpacity(0.1)
-                : Colors.transparent,
+            color: isSelected ? AppColor.greenLight : Colors.grey[100],
             borderRadius: BorderRadius.circular(12.0),
             border: Border.all(
-              color: isSelected ? lightGreenBorder : defaultBorder,
-              width: isSelected ? 2.0 : 1.0,
+              color: isSelected ? AppColor.activeDot : Colors.transparent,
+              width: 2,
             ),
           ),
           child: Row(
@@ -322,7 +338,7 @@ class PersonalizationQuestionCards extends StatelessWidget {
                 onChanged: (value) {
                   onTap();
                 },
-                activeColor: primaryGreen,
+                activeColor: AppColor.activeDot,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
@@ -331,15 +347,15 @@ class PersonalizationQuestionCards extends StatelessWidget {
               // Image if available
               if (imagePath != null) ...[
                 SizedBox(
-                  width: 60,
-                  height: 60,
+                  width: imageSize,
+                  height: imageSize,
                   child: imagePath.startsWith('http')
                       ? Image.network(
                           imagePath,
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) {
                             return Container(
-                              color: Colors.grey[200],
+                              color: Colors.grey[100],
                               child: const Icon(Icons.image_not_supported),
                             );
                           },

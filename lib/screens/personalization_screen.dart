@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hydropome/core/constants/app_color.dart';
 import 'package:hydropome/core/data/personalization_data.dart';
+import 'package:hydropome/screens/main.navigation.dart';
 import 'package:hydropome/widgets/personalization_question_cards.dart';
 
 class OnboardingClipper extends CustomClipper<Path> {
@@ -114,6 +115,9 @@ class _PersonalizationScreenState extends State<PersonalizationScreen> {
       // TODO: Navigate to next screen or submit data
       // You can access all answers here:
       // _selectedOptions1, _selectedOptions2, _selectedOptions3
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainNavigation()),
+      );
     }
   }
 
@@ -201,8 +205,8 @@ class _PersonalizationScreenState extends State<PersonalizationScreen> {
 
     // Interpolasi dari hitam transparan ke abu-abu transparan
     return Color.lerp(
-      Colors.black.withOpacity(0.2),
-      Colors.grey.withOpacity(0.1),
+      AppColor.buttonBg.withValues(alpha: 0.2),
+      AppColor.buttonBg.withValues(alpha: 1.0),
       scrollProgress,
     )!;
   }
@@ -231,7 +235,7 @@ class _PersonalizationScreenState extends State<PersonalizationScreen> {
                     Container(
                       decoration: BoxDecoration(
                         color: _calculateButtonBackgroundColor(),
-                        shape: BoxShape.circle,
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: IconButton(
                         icon: Icon(
@@ -254,29 +258,35 @@ class _PersonalizationScreenState extends State<PersonalizationScreen> {
                       ),
                     ),
                     // Page Indicator
-                    Text(
-                      _pageIndicator,
-                      style: TextStyle(
-                        color: _calculateAppBarTextColor(),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    // Skip Button
-                    TextButton(
-                      onPressed: () {
-                        // Handle skip action
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: _calculateButtonBackgroundColor(),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                    Row(
+                      children: [
+                        Text(
+                          _pageIndicator,
+                          style: TextStyle(
+                            color: _calculateAppBarTextColor(),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        'Lewati',
-                        style: TextStyle(color: _calculateAppBarTextColor()),
-                      ),
+                        SizedBox(width: 8),
+                        TextButton(
+                          onPressed: () {
+                            // Handle skip action
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: _calculateButtonBackgroundColor(),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Text(
+                            'Lewati',
+                            style: TextStyle(
+                              color: _calculateAppBarTextColor(),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

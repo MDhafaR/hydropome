@@ -10,5 +10,6 @@ class AppColor {
   // Warna untuk inactive dot (light grey)
   static const Color activeDot = Color(0xFF179778);
   static const Color inactiveDot = Color(0xFFFFFFFF);
+  static const Color buttonBg = Color(0x00E8F5F2);
 }
 
