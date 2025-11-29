@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/constants/app_color.dart';
-import 'home_screen.dart';
+import './main.navigation.dart'; // GANTI IMPORT INI
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -18,16 +18,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       emojis: ['🥕', '🍅'],
       body:
           'Bersama HydropoMe, menanam sayuran untuk hidup lebih sehat dan hemat jadi lebih mudah!',
-      imagePath:
-          'assets/onboarding1.png', // Placeholder, bisa diganti dengan path gambar yang sesuai
+      imagePath: 'assets/onboarding1.png',
     ),
     OnboardingPageData(
       headline: 'Belanja Starter Kit & Jual Hasil Panen!',
       emojis: [],
       body:
           'Belanja, jual panen, dan penuhi kebutuhanmu di marketplace kami. Praktis banget buat kamu yang suka berkebun dari rumah!',
-      imagePath:
-          'assets/onboarding2.png', // Placeholder, bisa diganti dengan path gambar yang sesuai
+      imagePath: 'assets/onboarding2.png',
     ),
   ];
 
@@ -37,8 +35,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _goToHome() {
+    // GANTI NAVIGASI KE MainNavigation
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
+      MaterialPageRoute(builder: (context) => const MainNavigation()),
     );
   }
 
@@ -69,7 +68,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: Stack(
         children: [
           // Gambar hero yang berubah dengan AnimatedSwitcher
-          // Gambar harus full background tanpa ClipRRect atau borderRadius
           Positioned.fill(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 400),
@@ -81,7 +79,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 key: ValueKey<int>(_currentPage),
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
-                  // Fallback jika gambar tidak ditemukan
                   return Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -116,8 +113,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               clipper: OnboardingClipper(),
               child: Container(
                 decoration: const BoxDecoration(color: AppColor.primary),
-                // Nilai 'top' harus lebih besar dari 'curveHeight' di clipper
-                // 80.0 (curve) + 24.0 (jarak) = 104.0
                 padding: const EdgeInsets.fromLTRB(24, 104, 24, 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,17 +122,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       duration: const Duration(milliseconds: 300),
                       transitionBuilder:
                           (Widget child, Animation<double> animation) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: SlideTransition(
-                                position: Tween<Offset>(
-                                  begin: const Offset(0.0, 0.1),
-                                  end: Offset.zero,
-                                ).animate(animation),
-                                child: child,
-                              ),
-                            );
-                          },
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0.0, 0.1),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
+                          ),
+                        );
+                      },
                       child: RichText(
                         key: ValueKey<String>('headline_$_currentPage'),
                         text: TextSpan(
@@ -165,17 +160,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       duration: const Duration(milliseconds: 300),
                       transitionBuilder:
                           (Widget child, Animation<double> animation) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: SlideTransition(
-                                position: Tween<Offset>(
-                                  begin: const Offset(0.0, 0.1),
-                                  end: Offset.zero,
-                                ).animate(animation),
-                                child: child,
-                              ),
-                            );
-                          },
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0.0, 0.1),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
+                          ),
+                        );
+                      },
                       child: Text(
                         currentPageData.body,
                         key: ValueKey<String>('body_$_currentPage'),
@@ -232,24 +227,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _buildNavigation() {
-    // Halaman 1: dots di tengah, arrow forward di kanan
-    // Halaman 2: arrow back di kiri, dots di tengah, arrow forward di kanan
     if (_currentPage == 0) {
-      // Halaman pertama: dots di tengah, arrow forward di kanan
       return Stack(
         alignment: Alignment.center,
         children: [
-          // Dots indicator di tengah (absolute center)
           Align(
             alignment: Alignment.center,
             child: CustomPageIndicator(
-            currentPage: _currentPage,
-            pageCount: 2,
-            activeDotColor: AppColor.activeDot,
-            inactiveDotColor: AppColor.inactiveDot.withValues(alpha: 0.2),
+              currentPage: _currentPage,
+              pageCount: 2,
+              activeDotColor: AppColor.activeDot,
+              inactiveDotColor: AppColor.inactiveDot.withValues(alpha: 0.2),
             ),
           ),
-          // Arrow forward button di pojok kanan
           Align(
             alignment: Alignment.centerRight,
             child: _buildNavButton(
@@ -261,13 +251,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ],
       );
     } else {
-      // Halaman kedua: arrow back di kiri, dots di tengah, arrow forward di kanan
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Dots indicator di tengah (absolute center)
-
-          // Arrow back button di kiri
           _buildNavButton(
             icon: Icons.chevron_left,
             onPressed: _previousPage,
@@ -279,7 +265,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             activeDotColor: AppColor.activeDot,
             inactiveDotColor: AppColor.inactiveDot.withValues(alpha: 0.2),
           ),
-          // Arrow forward button di kanan
           _buildNavButton(
             icon: Icons.chevron_right,
             onPressed: _nextPage,
@@ -352,7 +337,7 @@ class CustomPageIndicator extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         for (int index = 0; index < pageCount; index++) ...[
-          if (index > 0) const SizedBox(width: 8), // Spacing 8px antara dots
+          if (index > 0) const SizedBox(width: 8),
           _buildDot(index == currentPage, index),
         ],
       ],
@@ -360,7 +345,6 @@ class CustomPageIndicator extends StatelessWidget {
   }
 
   Widget _buildDot(bool isActive, int index) {
-    // Active dot: 14x14, Inactive dot: 12x12
     const double activeSize = 14.0;
     const double inactiveSize = 12.0;
 
@@ -388,21 +372,18 @@ class OnboardingClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final path = Path();
-
-    // Ini adalah 'kedalaman' lekukan ke bawah.
-    // Sesuaikan 40.0 ini jika perlu.
     double curveHeight = 40.0;
 
-    path.lineTo(0, 0); // Mulai dari kiri atas
+    path.lineTo(0, 0);
     path.quadraticBezierTo(
-      size.width / 2, // Titik kontrol tengah (x)
-      curveHeight * 2, // Titik kontrol tengah (y) - ditarik ke BAWAH
-      size.width, // Titik akhir (x)
-      0, // Titik akhir (y)
+      size.width / 2,
+      curveHeight * 2,
+      size.width,
+      0,
     );
-    path.lineTo(size.width, size.height); // Garis ke kanan bawah
-    path.lineTo(0, size.height); // Garis ke kiri bawah
-    path.close(); // Tutup path
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
 
     return path;
   }

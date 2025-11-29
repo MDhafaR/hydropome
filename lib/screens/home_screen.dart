@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hydropome/screens/laman_taman.dart';
 import 'package:hydropome/screens/onboarding_screen.dart';
 import '../core/constants/app_color.dart';
 
@@ -10,7 +11,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.only(bottom: 50.0),
+        padding: const EdgeInsets.only(bottom: 4.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -177,37 +178,48 @@ class HomeScreen extends StatelessWidget {
                     gambar: 'assets/tanaman1.png', 
                     kesulitan: 'Mudah', 
                     warnakesulitan: AppColor.activeDot, 
-                    durasi: '3-5 Ming'),
+                    durasi: '3-5 Ming',
+                    pageTujuan: PlantDetailScreen(),
+                  ),
                   PlantCard(
                     judul: 'Bayam Hidroponik', 
                     gambar: 'assets/tanaman2.png', 
                     kesulitan: 'Mudah', 
                     warnakesulitan: AppColor.activeDot, 
-                    durasi: '3-4 Ming'),
+                    durasi: '3-4 Ming',
+                    pageTujuan: const Placeholder(),
+                  ),
                   PlantCard(
                     judul: 'Pakcoy Hidroponik', 
                     gambar: 'assets/tanaman3.png', 
                     kesulitan: 'Mudah', 
                     warnakesulitan: AppColor.activeDot, 
-                    durasi: '4-5 Ming'),
+                    durasi: '4-5 Ming',
+                    pageTujuan: const Placeholder(),
+                  ),
                   PlantCard(
                     judul: 'Tomat Cherry',
                     gambar: 'assets/tanaman4.png',
                     kesulitan: 'Sedang',
                     warnakesulitan: Color.fromRGBO(229, 108, 63, 100),
-                    durasi: '8-10 Ming',),
+                    durasi: '8-10 Ming',
+                    pageTujuan: const Placeholder(),
+                  ),
                   PlantCard(
                     judul: 'Seledri Hidroponik',
                     gambar: 'assets/tanaman5.png',
                     kesulitan: 'Sedang',
                     warnakesulitan: Color.fromRGBO(229, 108, 63, 100),
-                    durasi: '5-6 Ming',),
+                    durasi: '5-6 Ming',
+                    pageTujuan: const Placeholder(),
+                    ),
                   PlantCard(
                     judul: 'Stroberi Hidroponik',
                     gambar: 'assets/tanaman6.png',
                     kesulitan: 'Sulit',
                     warnakesulitan: Color.fromRGBO(193, 1, 1, 100),
                     durasi: '12-16 Ming',
+                    pageTujuan: const Placeholder(),
                   ),
                 ],
               ),
@@ -410,6 +422,7 @@ class PlantCard extends StatelessWidget{
   final String kesulitan;
   final Color warnakesulitan;
   final String durasi;
+  final Widget pageTujuan;
 
   const PlantCard({
     super.key,
@@ -418,6 +431,7 @@ class PlantCard extends StatelessWidget{
     required this.kesulitan,
     required this.warnakesulitan,
     required this.durasi,
+    required this.pageTujuan,
   });
 
   @override
@@ -431,7 +445,10 @@ class PlantCard extends StatelessWidget{
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: (){
-          print('njay');
+          Navigator.push(
+            context, 
+            MaterialPageRoute(builder: (context) => pageTujuan),
+          );
         },
         child: Container(
           width: 170,
