@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import '../core/constants/app_color.dart';
 import '../models/product_model.dart';
 import './product_detail_screen.dart';
+import './sell_product_screen.dart';
+import './cart_screen.dart';
+
+const double _kHeaderHeight = 185.0;
+const double _kCurveDepth = 45.0;
 
 class MarketplaceScreen extends StatelessWidget {
   const MarketplaceScreen({super.key});
 
-  // Sample product data
   List<ProductModel> get _products => [
         ProductModel(
           id: '1',
@@ -21,14 +25,14 @@ class MarketplaceScreen extends StatelessWidget {
           hasDiscount: true,
           hasBonus: true,
           description:
-              'Basic Starter Kit ini cocok untuk kamu yang baru mulai belajar hidroponik di rumah. Sistem pipa NFT (Nutrient Film Technique) sangat populer karena perawatannya yang mudah dan efisien. Sistem kit ini sudah termasuk peralatan dasar untuk memulai menanam sayuran seperti selada, bayam, dan lain-lain.',
+              'Basic Starter Kit ini cocok untuk kamu yang baru mulai belajar hidroponik.',
           packageContents: [
             '1 set pipa NFT (tidak tanaman)',
             'Pompa air 1 selang',
             'Net pot',
             'Rockwool',
             'Nutrisi A/B Mix',
-            'Buku panduan + link tutorial video',
+            'Panduan lengkap',
           ],
         ),
         ProductModel(
@@ -41,13 +45,12 @@ class MarketplaceScreen extends StatelessWidget {
           bgColor: AppColor.greenLight,
           hasDiscount: true,
           hasBonus: false,
-          description:
-              'Paket lengkap hidroponik untuk pemula dengan sistem wick yang mudah digunakan.',
+          description: 'Paket lengkap hidroponik untuk pemula.',
           packageContents: [
-            '5 net pot ukuran sedang',
-            'Rockwool media tanam',
-            'Nutrisi hidroponik A/B',
-            'Panduan penanaman',
+            '5 net pot',
+            'Rockwool',
+            'Nutrisi A/B',
+            'Panduan menanam',
           ],
         ),
         ProductModel(
@@ -60,13 +63,12 @@ class MarketplaceScreen extends StatelessWidget {
           bgColor: AppColor.greenLight,
           hasDiscount: true,
           hasBonus: false,
-          description:
-              'Paket hidroponik dengan sistem DFT untuk hasil panen maksimal.',
+          description: 'Paket hidroponik sistem DFT.',
           packageContents: [
-            'Container hidroponik DFT',
+            'Container DFT',
             '10 net pot',
-            'Aerator dan selang',
-            'Nutrisi lengkap 1 bulan',
+            'Aerator',
+            'Nutrisi 1 bulan',
           ],
         ),
         ProductModel(
@@ -76,15 +78,14 @@ class MarketplaceScreen extends StatelessWidget {
           price: 'Rp 25.000',
           oldPrice: 'Rp 50.000',
           imagePath: 'assets/product4.png',
-          bgColor: const Color(0xFFFFF4E6),
+          bgColor: Color(0xFFFFF4E6),
           hasDiscount: true,
           hasBonus: false,
-          description:
-              'Sarung tangan berkebun premium untuk melindungi tangan saat berkebun.',
+          description: 'Sarung tangan berkebun premium.',
           packageContents: [
-            'Sarung tangan anti air',
-            'Bahan karet tebal',
-            'Nyaman digunakan',
+            'Anti air',
+            'Karet tebal',
+            'Nyaman',
             'Tahan lama',
           ],
         ),
@@ -92,151 +93,185 @@ class MarketplaceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(),
-            _buildCategoryTabs(),
-            _buildProductGrid(context),
-          ],
-        ),
-      ),
-    );
-  }
+    const double topPadding = 45.0;
 
-  Widget _buildHeader() {
-    return Container(
-      color: AppColor.primary,
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F5),
+      body: Stack(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Marketplace',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.3,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColor.activeDot,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(Icons.add, color: Colors.white, size: 16),
-                    SizedBox(width: 4),
-                    Text(
-                      'Jual Produk',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          ClipPath(
+            clipper: _CurvedHeaderClipper(),
+            child: Container(
+              height: _kHeaderHeight,
+              color: AppColor.primary,
+            ),
           ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(24),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
+          SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, topPadding, 20, 0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Marketplace',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const SellProductScreen(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 10,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColor.activeDot,
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              child: const Row(
+                                children: [
+                                  Icon(Icons.add,
+                                      color: Colors.white, size: 18),
+                                  SizedBox(width: 6),
+                                  Text(
+                                    'Jual Produk',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: _kHeaderHeight - topPadding - 100 + 30,
                       ),
                     ],
                   ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Cari di marketplace...',
-                      hintStyle: TextStyle(
-                        color: Colors.grey[400],
-                        fontSize: 14,
-                      ),
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.only(left: 16, right: 8),
-                        child: Icon(
-                          Icons.search,
-                          color: Colors.grey[400],
-                          size: 22,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.06),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Cari di marketplace...',
+                              hintStyle: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 14,
+                              ),
+                              prefixIcon: Icon(Icons.search,
+                                  color: Colors.grey[400], size: 22),
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 15,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
+                      const SizedBox(width: 12),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const CartScreen(),
+                            ),
+                          );
+                        },
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.06),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.shopping_cart_outlined,
+                                color: AppColor.primary,
+                                size: 24,
+                              ),
+                            ),
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Text(
+                                  '3',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.shopping_cart_outlined,
-                      color: AppColor.primary,
-                      size: 24,
-                    ),
+                const SizedBox(height: 5),
+                _buildCategoryTabs(),
+                Expanded(
+                  child: Container(
+                    color: Colors.white,
+                    child: _buildProductGrid(context),
                   ),
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      constraints: const BoxConstraints(
-                        minWidth: 18,
-                        minHeight: 18,
-                      ),
-                      child: const Text(
-                        '2',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                )
+              ],
+            ),
           ),
         ],
       ),
@@ -245,15 +280,16 @@ class MarketplaceScreen extends StatelessWidget {
 
   Widget _buildCategoryTabs() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+      color: Colors.white,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
             _buildCategoryChip('Starter Kit', isSelected: true),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             _buildCategoryChip('Dari Customer', isSelected: false),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             _buildCategoryChip('Media Tanam', isSelected: false),
           ],
         ),
@@ -263,10 +299,10 @@ class MarketplaceScreen extends StatelessWidget {
 
   Widget _buildCategoryChip(String label, {required bool isSelected}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
       decoration: BoxDecoration(
         color: isSelected ? AppColor.activeDot : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: isSelected ? AppColor.activeDot : Colors.grey.shade300,
           width: 1.5,
@@ -284,47 +320,40 @@ class MarketplaceScreen extends StatelessWidget {
   }
 
   Widget _buildProductGrid(BuildContext context) {
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 0.68,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: _products.length,
-        itemBuilder: (context, index) {
-          final product = _products[index];
-          return _buildProductCard(context, product);
-        },
+    return GridView.builder(
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        childAspectRatio: 0.7,
       ),
+      itemCount: _products.length,
+      itemBuilder: (context, i) => _buildProductCard(context, _products[i]),
     );
   }
 
   Widget _buildProductCard(BuildContext context, ProductModel product) {
     return InkWell(
       onTap: () {
-        // NAVIGATE TO PRODUCT DETAIL
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(product: product),
+            builder: (_) => ProductDetailScreen(product: product),
           ),
         );
       },
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(16),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.08),
-              spreadRadius: 0,
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
+              blurRadius: 12,
+              offset: const Offset(0, 3),
+            )
           ],
         ),
         child: Column(
@@ -335,8 +364,8 @@ class MarketplaceScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: product.bgColor,
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
                 ),
               ),
               child: Stack(
@@ -344,19 +373,17 @@ class MarketplaceScreen extends StatelessWidget {
                   Center(
                     child: Icon(
                       Icons.inventory_2_outlined,
-                      size: 50,
+                      size: 54,
                       color: Colors.grey[300],
                     ),
                   ),
                   if (product.hasDiscount)
                     Positioned(
-                      top: 8,
-                      right: 8,
+                      top: 10,
+                      right: 10,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                         decoration: BoxDecoration(
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(6),
@@ -365,9 +392,9 @@ class MarketplaceScreen extends StatelessWidget {
                           'DISKON',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 9,
+                            fontSize: 10,
                             fontWeight: FontWeight.bold,
-                            letterSpacing: 0.3,
+                            letterSpacing: 0.5,
                           ),
                         ),
                       ),
@@ -375,52 +402,49 @@ class MarketplaceScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.category,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.category,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 11,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    product.name,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      height: 1.3,
-                      color: Colors.black87,
+                    const SizedBox(height: 4),
+                    Text(
+                      product.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black87,
+                      ),
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    product.price,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.activeDot,
-                      letterSpacing: 0.2,
+                    const Spacer(),
+                    Text(
+                      product.price,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.activeDot,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    product.oldPrice,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[500],
-                      decoration: TextDecoration.lineThrough,
-                      decorationThickness: 1.5,
+                    Text(
+                      product.oldPrice,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey[500],
+                        decoration: TextDecoration.lineThrough,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -428,4 +452,30 @@ class MarketplaceScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class _CurvedHeaderClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    final curveHeight = _kCurveDepth;
+
+    path.lineTo(0, size.height - curveHeight);
+
+    path.quadraticBezierTo(
+      size.width / 2,
+      size.height + curveHeight,
+      size.width,
+      size.height - curveHeight,
+    );
+
+    path.lineTo(size.width, 0);
+    path.lineTo(0, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
