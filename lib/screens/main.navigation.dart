@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hydropome/screens/profile_screen.dart';
 import '../core/constants/bottom_nav_bar.dart';
 import 'home_screen.dart';
 import 'marketplace_screen.dart';
-// import 'pantau_tanaman_screen.dart'; // Uncomment kalau udah dibuat
+import 'pantautanaman.dart'; 
 // import 'profile_screen.dart'; // Uncomment kalau udah dibuat
 
 class MainNavigation extends StatefulWidget {
@@ -58,9 +59,9 @@ class _MainNavigationState extends State<MainNavigation> {
         },
         children: [
           const HomeScreen(),
-          _buildPlaceholderScreen('Pantau Tanaman', Icons.spa),
+          const PantauTanamanScreen(),  
           const MarketplaceScreen(),
-          _buildPlaceholderScreen('Profil', Icons.person),
+          const ProfilePage(),
         ],
       ),
       bottomNavigationBar: BottomNavBar(

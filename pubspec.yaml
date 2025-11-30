@@ -1,6 +1,6 @@
 name: hydropome
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -12,6 +12,7 @@ dependencies:
   flutter_animate: ^4.5.0
   flutter_svg: ^2.2.3
   google_fonts: ^6.2.1
+  image_picker: ^0.8.9
 
 dev_dependencies:
   flutter_test:
@@ -21,7 +22,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  
+
   assets:
     - assets/
 
