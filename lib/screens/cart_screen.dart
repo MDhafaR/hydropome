@@ -23,7 +23,7 @@ class _CartScreenState extends State<CartScreen> {
         category: 'Starter Kit',
         price: 'Rp 25.000',
         oldPrice: 'Rp 40.000',
-        imagePath: 'assets/product2.png',
+        imagePath: 'assets/paket2.png',
         bgColor: AppColor.greenLight,
         hasDiscount: true,
         hasBonus: false,
@@ -40,7 +40,7 @@ class _CartScreenState extends State<CartScreen> {
         category: 'Starter Kit',
         price: 'Rp 25.000',
         oldPrice: 'Rp 40.000',
-        imagePath: 'assets/product2.png',
+        imagePath: 'assets/paket2.png',
         bgColor: AppColor.greenLight,
         hasDiscount: true,
         hasBonus: false,
@@ -57,7 +57,7 @@ class _CartScreenState extends State<CartScreen> {
         category: 'Starter Kit',
         price: 'Rp 25.000',
         oldPrice: 'Rp 40.000',
-        imagePath: 'assets/product2.png',
+        imagePath: 'assets/paket2.png',
         bgColor: AppColor.greenLight,
         hasDiscount: true,
         hasBonus: false,
@@ -163,10 +163,11 @@ class _CartScreenState extends State<CartScreen> {
               });
             },
             activeColor: AppColor.activeDot,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
           ),
 
-          // Product Image
           Container(
             width: 70,
             height: 70,
@@ -174,7 +175,8 @@ class _CartScreenState extends State<CartScreen> {
               color: item.product.bgColor,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.inventory_2_outlined, size: 30, color: Colors.grey[300]),
+            clipBehavior: Clip.hardEdge,
+            child: Image.asset(item.product.imagePath, fit: BoxFit.cover),
           ),
 
           const SizedBox(width: 12),
@@ -239,7 +241,11 @@ class _CartScreenState extends State<CartScreen> {
                 borderRadius: BorderRadius.circular(4),
                 child: Padding(
                   padding: const EdgeInsets.all(4),
-                  child: Icon(Icons.delete_outline, size: 20, color: Colors.grey[600]),
+                  child: Icon(
+                    Icons.delete_outline,
+                    size: 20,
+                    color: Colors.grey[600],
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -284,7 +290,10 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildQuantityButton({required IconData icon, required VoidCallback onTap}) {
+  Widget _buildQuantityButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(4),
@@ -345,7 +354,9 @@ class _CartScreenState extends State<CartScreen> {
               child: ElevatedButton(
                 onPressed: hasSelected ? _goToCheckout : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: hasSelected ? AppColor.activeDot : Colors.grey[300],
+                  backgroundColor: hasSelected
+                      ? AppColor.activeDot
+                      : Colors.grey[300],
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
