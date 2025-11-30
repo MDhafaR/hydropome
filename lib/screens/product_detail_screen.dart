@@ -1,5 +1,3 @@
-// lib/screens/product_detail_screen.dart
-
 import 'package:flutter/material.dart';
 import '../core/constants/app_color.dart';
 import '../models/product_model.dart';
@@ -17,6 +15,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   bool _showQuantitySelector = false;
   int _quantity = 0;
 
+  bool get _isCustomerProduct => widget.product.category != 'Starter Kit';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +24,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // ================= HEADER BACK =================
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
@@ -53,14 +52,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ],
               ),
             ),
-
-            // ================= BODY SCROLL =================
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ================= PRODUCT IMAGE =================
                     ClipPath(
                       clipper: BottomCurveClipper(),
                       child: Container(
@@ -69,42 +65,33 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         color: widget.product.bgColor,
                         child: Stack(
                           children: [
-                            Center(
+                            Positioned.fill(
                               child: Image.asset(
                                 widget.product.imagePath,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
+                                fit: BoxFit.contain,
                                 errorBuilder: (context, error, stackTrace) {
-                                  return Icon(
-                                    Icons.inventory_2_outlined,
-                                    size: 120,
-                                    color: Colors.grey[300],
+                                  return Center(
+                                    child: Icon(
+                                      Icons.inventory_2_outlined,
+                                      size: 120,
+                                      color: Colors.grey[300],
+                                    ),
                                   );
                                 },
                               ),
                             ),
-
-                            // BONUS / DISKON BADGE
-                            if (widget.product.hasBonus ||
-                                widget.product.hasDiscount)
+                            if (widget.product.hasBonus || widget.product.hasDiscount)
                               Positioned(
                                 top: 24,
                                 right: 16,
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                   decoration: BoxDecoration(
-                                    color: widget.product.hasBonus
-                                        ? AppColor.activeDot
-                                        : Colors.redAccent,
+                                    color: widget.product.hasBonus ? AppColor.activeDot : Colors.redAccent,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
-                                    widget.product.hasBonus
-                                        ? 'Bonus'
-                                        : 'Promo',
+                                    widget.product.hasBonus ? 'Bonus' : 'Promo',
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 12,
@@ -117,19 +104,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                       ),
                     ),
-
-                    // ================= INFO PRODUK =================
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // CATEGORY LABEL
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 4,
-                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
                               color: AppColor.greenLight,
                               borderRadius: BorderRadius.circular(6),
@@ -143,10 +124,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                             ),
                           ),
-
                           const SizedBox(height: 12),
-
-                          // NAMA PRODUK
                           Text(
                             widget.product.name,
                             style: const TextStyle(
@@ -156,10 +134,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               height: 1.3,
                             ),
                           ),
-
                           const SizedBox(height: 12),
-
-                          // HARGA
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -171,21 +146,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   color: AppColor.activeDot,
                                 ),
                               ),
-                              const SizedBox(width: 12),
-                              Text(
-                                widget.product.oldPrice,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[500],
-                                  decoration: TextDecoration.lineThrough,
+                              if (widget.product.hasDiscount) ...[
+                                const SizedBox(width: 12),
+                                Text(
+                                  widget.product.oldPrice,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey[500],
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
                                 ),
-                              ),
+                              ],
                             ],
                           ),
-
                           const SizedBox(height: 24),
-
-                          // DESKRIPSI
                           const Text(
                             'Deskripsi',
                             style: TextStyle(
@@ -203,48 +177,63 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               height: 1.6,
                             ),
                           ),
-
                           const SizedBox(height: 24),
-
-                          const Text(
-                            '📦 Isi Paket:',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-
-                          // ITEM PAKET
-                          ...widget.product.packageContents.map(
-                            (item) => Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    '• ',
-                                    style: TextStyle(
-                                      color: AppColor.activeDot,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      item,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey[700],
-                                        height: 1.5,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                          if (!_isCustomerProduct) ...[
+                            const Text(
+                              '📦 Isi Paket:',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black87,
                               ),
                             ),
-                          ),
-
+                            const SizedBox(height: 12),
+                            ...widget.product.packageContents.map(
+                              (item) => Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      '• ',
+                                      style: TextStyle(
+                                        color: AppColor.activeDot,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[700],
+                                          height: 1.5,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                          if (_isCustomerProduct) ...[
+                            const Text(
+                              'Kontak Penjual',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Whatsapp: 089123456678 (Joshua Theo)',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          ],
                           const SizedBox(height: 120),
                         ],
                       ),
@@ -256,11 +245,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomSection(),
+      bottomNavigationBar: _isCustomerProduct ? null : _buildBottomSection(),
     );
   }
-
-  // ================= BOTTOM NAV =================
 
   Widget _buildBottomSection() {
     return AnimatedContainer(
@@ -277,9 +264,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         ],
       ),
       child: SafeArea(
-        child: _showQuantitySelector
-            ? _buildQuantitySelector()
-            : _buildAddButton(),
+        child: _showQuantitySelector ? _buildQuantitySelector() : _buildAddButton(),
       ),
     );
   }
@@ -406,9 +391,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       barrierDismissible: false,
       builder: (context) {
         return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Padding(
             padding: const EdgeInsets.all(32),
             child: Column(
@@ -435,7 +418,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
@@ -449,9 +431,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       backgroundColor: AppColor.activeDot,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       elevation: 0,
                     ),
                     child: const Text(
@@ -473,18 +453,14 @@ class BottomCurveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final path = Path();
-
     path.lineTo(0, size.height - 40);
-
     path.quadraticBezierTo(
       size.width / 2,
       size.height,
       size.width,
       size.height - 40,
     );
-
     path.lineTo(size.width, 0);
-
     return path;
   }
 

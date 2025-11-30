@@ -5,12 +5,19 @@ import './product_detail_screen.dart';
 import './sell_product_screen.dart';
 import './cart_screen.dart';
 
-const double _kHeaderHeight = 160.0;
+const double _kHeaderHeight = 165.0;
 const double _kCurveDepth = 45.0;
 const double _kTopPadding = 45.0;
 
-class MarketplaceScreen extends StatelessWidget {
+class MarketplaceScreen extends StatefulWidget {
   const MarketplaceScreen({super.key});
+
+  @override
+  State<MarketplaceScreen> createState() => _MarketplaceScreenState();
+}
+
+class _MarketplaceScreenState extends State<MarketplaceScreen> {
+  String _selectedCategory = 'Starter Kit';
 
   static final List<ProductModel> _products = [
     ProductModel(
@@ -25,7 +32,7 @@ class MarketplaceScreen extends StatelessWidget {
       hasBonus: true,
       description: 'Basic Starter Kit ini cocok untuk kamu yang baru mulai belajar hidroponik.',
       packageContents: [
-        '1 set pipa NFT (tidak tanaman)',
+        '1 set pipa NFT',
         'Pompa air 1 selang',
         'Net pot',
         'Rockwool',
@@ -57,7 +64,12 @@ class MarketplaceScreen extends StatelessWidget {
       hasDiscount: true,
       hasBonus: false,
       description: 'Paket hidroponik sistem DFT.',
-      packageContents: ['Container DFT', '10 net pot', 'Aerator', 'Nutrisi 1 bulan'],
+      packageContents: [
+        'Container DFT',
+        '10 net pot',
+        'Aerator',
+        'Nutrisi 1 bulan',
+      ],
     ),
     ProductModel(
       id: '4',
@@ -73,6 +85,78 @@ class MarketplaceScreen extends StatelessWidget {
       packageContents: ['Anti air', 'Karet tebal', 'Nyaman', 'Tahan lama'],
     ),
   ];
+
+  static final List<ProductModel> _customerProducts = [
+    ProductModel(
+      id: '5',
+      name: 'Media + Tanaman',
+      category: 'Dari Customer',
+      price: 'Rp 150.000',
+      oldPrice: 'Rp 180.000',
+      imagePath: 'assets/mediatanaman.png',
+      bgColor: Colors.white,
+      hasDiscount: true,
+      hasBonus: false,
+      description: 'Basic Starter Kit cocok untuk kamu yang baru mulai hidroponik.',
+      packageContents: ['NFT 6 lubang', 'Rockwool', 'Nutrisi A/B', '6 Tanaman sawi'],
+    ),
+    ProductModel(
+      id: '6',
+      name: 'Nutrisi Hidroponik A/B',
+      category: 'Dari Customer',
+      price: 'Rp 35.000',
+      oldPrice: 'Rp 50.000',
+      imagePath: 'assets/nutrisihidroponik.png',
+      bgColor: AppColor.greenLight,
+      hasDiscount: true,
+      hasBonus: false,
+      description: 'Nutrisi A/B Mix untuk pertumbuhan sayuran.',
+      packageContents: ['500ml Nutrisi A', '500ml Nutrisi B', 'Takaran'],
+    ),
+    ProductModel(
+      id: '7',
+      name: 'Net Cup (2 Pcs)',
+      category: 'Aksesoris Hidroponik',
+      price: 'Rp 15.000',
+      oldPrice: 'Rp 30.000',
+      imagePath: 'assets/netCup2Picis.jpeg',
+      bgColor: AppColor.greenLight,
+      hasDiscount: true,
+      hasBonus: false,
+      description:
+          'Net cup berkualitas, kuat, tidak mudah pecah, dan memiliki sirkulasi air optimal.',
+      packageContents: [
+        '2 buah net cup standar',
+        'Material plastik tebal',
+        'Cocok untuk rakit apung & NFT',
+      ],
+    ),
+    ProductModel(
+      id: '8',
+      name: 'Starter Kit Hidroponik',
+      category: 'Paket Pemula',
+      price: 'Rp 75.000',
+      oldPrice: 'Rp 90.000',
+      imagePath: 'assets/paketmulai.png',
+      bgColor: AppColor.greenLight,
+      hasDiscount: true,
+      hasBonus: false,
+      description:
+          'Paket lengkap untuk pemula yang ingin mulai bertanam hidroponik di rumah.',
+      packageContents: [
+        '500ml Nutrisi A',
+        '500ml Nutrisi B',
+        'Satu set takaran nutrisi',
+        'Panduan penggunaan',
+      ],
+    ),
+  ];
+
+  List<ProductModel> get _filteredProducts {
+    if (_selectedCategory == 'Starter Kit') return _products;
+    if (_selectedCategory == 'Dari Customer') return _customerProducts;
+    return [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,10 +189,7 @@ class MarketplaceScreen extends StatelessWidget {
   Widget _buildCurvedHeader() {
     return ClipPath(
       clipper: _CurvedHeaderClipper(),
-      child: Container(
-        height: _kHeaderHeight,
-        color: AppColor.primary,
-      ),
+      child: Container(height: _kHeaderHeight, color: AppColor.primary),
     );
   }
 
@@ -189,11 +270,7 @@ class MarketplaceScreen extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 8,
-            offset: Offset(0, 2),
-          ),
+          BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 2)),
         ],
       ),
       child: TextField(
@@ -268,34 +345,43 @@ class MarketplaceScreen extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            _buildCategoryChip('Starter Kit', isSelected: true),
+            _buildCategoryChip('Starter Kit'),
             SizedBox(width: 10),
-            _buildCategoryChip('Dari Customer', isSelected: false),
+            _buildCategoryChip('Dari Customer'),
             SizedBox(width: 10),
-            _buildCategoryChip('Media Tanam', isSelected: false),
+            _buildCategoryChip('Media Tanam'),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCategoryChip(String label, {required bool isSelected}) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-      decoration: BoxDecoration(
-        color: isSelected ? AppColor.activeDot : Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: isSelected ? AppColor.activeDot : Colors.grey,
-          width: 1.5,
+  Widget _buildCategoryChip(String label) {
+    final isSelected = _selectedCategory == label;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedCategory = label;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColor.activeDot : Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: isSelected ? AppColor.activeDot : Colors.grey,
+            width: 1.5,
+          ),
         ),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? Colors.white : Colors.grey[700],
-          fontSize: 13,
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.grey[700],
+            fontSize: 13,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+          ),
         ),
       ),
     );
@@ -308,10 +394,11 @@ class MarketplaceScreen extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
-        childAspectRatio: 0.68, // FIXED
+        childAspectRatio: 0.68,
       ),
-      itemCount: _products.length,
-      itemBuilder: (context, i) => _buildProductCard(context, _products[i]),
+      itemCount: _filteredProducts.length,
+      itemBuilder: (context, i) =>
+          _buildProductCard(context, _filteredProducts[i]),
     );
   }
 
@@ -319,7 +406,9 @@ class MarketplaceScreen extends StatelessWidget {
     return InkWell(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => ProductDetailScreen(product: product)),
+        MaterialPageRoute(
+          builder: (_) => ProductDetailScreen(product: product),
+        ),
       ),
       borderRadius: BorderRadius.circular(16),
       child: Container(
@@ -337,10 +426,7 @@ class MarketplaceScreen extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildProductImage(product),
-            _buildProductInfo(product),
-          ],
+          children: [_buildProductImage(product), _buildProductInfo(product)],
         ),
       ),
     );
@@ -350,7 +436,7 @@ class MarketplaceScreen extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: 220, // FIXED
+          height: 220,
           width: double.infinity,
           decoration: BoxDecoration(
             color: product.bgColor,
@@ -361,15 +447,14 @@ class MarketplaceScreen extends StatelessWidget {
           ),
           child: Padding(
             padding: EdgeInsets.all(0.5),
-            child: Image.asset(product.imagePath, fit: BoxFit.contain),
+            child: Image.asset(
+              product.imagePath,
+              fit: BoxFit.contain,
+            ),
           ),
         ),
         if (product.hasDiscount || product.hasBonus)
-          Positioned(
-            top: 8,
-            right: 8,
-            child: _buildBadge(product),
-          ),
+          Positioned(top: 8, right: 8, child: _buildBadge(product)),
       ],
     );
   }

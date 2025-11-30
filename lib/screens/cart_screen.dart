@@ -14,7 +14,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  // Dummy cart items
   final List<CartItem> _cartItems = [
     CartItem(
       product: ProductModel(
