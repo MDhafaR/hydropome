@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/splash_screen.dart';
+import './screens/splash_screen.dart';
+import './screens/main.navigation.dart'; 
 
 void main() {
   runApp(const MainApp());
 }
-
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -16,6 +16,11 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(textTheme: GoogleFonts.plusJakartaSansTextTheme()),
       home: const SplashScreen(),
+      routes: {
+        '/main': (context) => const MainNavigation(), 
+        '/home': (context) => const MainNavigation(initialIndex: 0),
+        '/marketplace': (context) => const MainNavigation(initialIndex: 2),
+      },
     );
   }
 }

@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Logo
-            Image.asset('assets/logo.png', width: 200, height: 200)
+            Image.asset('assets/logo.png', width: 104, height: 104)
                 .animate()
                 .fadeIn(duration: 600.ms)
                 .scale(
@@ -41,27 +41,25 @@ class _SplashScreenState extends State<SplashScreen> {
                   end: const Offset(1, 1),
                   duration: 600.ms,
                 ),
-            const SizedBox(height: 40),
             // Teks "HydroPoMe"
             Text(
                   'HydroPoMe',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: AppColor.primary,
+                    color: AppColor.activeDot,
                   ),
                 )
                 .animate()
                 .fadeIn(duration: 600.ms, delay: 300.ms)
                 .slideY(begin: 0.2, end: 0, duration: 600.ms, delay: 300.ms),
-            const SizedBox(height: 12),
             // Teks tagline
             Text(
                   'Hijaukan Bumi Dengan Inovasi',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    color: AppColor.primary,
+                    color: AppColor.activeDot,
                     fontStyle: FontStyle.italic,
                   ),
                 )

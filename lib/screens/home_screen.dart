@@ -7,13 +7,43 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('HydroPoMe'),
-        backgroundColor: AppColor.primary,
-        foregroundColor: Colors.white,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              color: AppColor.primary,
+              padding: const EdgeInsets.all(16),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'HydroPoMe',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Selamat datang kembali!',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Expanded(
+              child: Center(
+                child: Text('Welcome to HydroPoMe'),
+              ),
+            ),
+          ],
+        ),
       ),
-      body: const Center(child: Text('Welcome to HydroPoMe')),
     );
   }
 }
-
